@@ -95,6 +95,16 @@ RSpec.describe GamesController, type: :controller do
       expect(response).to redirect_to(game_path(game_w_questions))
       expect(flash[:alert]).to be
     end
+
+    it 'wrong player response' do
+      put :answer, id: game_w_questions.id, letter: 'a'
+      game = assigns(:game)
+
+      expect(game.finished?).to be_truthy
+      expect(game.prize).to eq 0
+      expect(response).to redirect_to(user_path(user))
+      expect(flash[:alert]).to be
+    end
   end
 
   context 'Anon no access' do
