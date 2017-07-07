@@ -96,4 +96,30 @@ RSpec.describe GamesController, type: :controller do
       expect(flash[:alert]).to be
     end
   end
+
+  context 'Anon no access' do
+    it 'no acces #create' do
+      post :create
+
+      expect(response.status).not_to eq(200)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:alert]).to be
+    end
+
+    it 'no access #answer' do
+      put :answer, id: game_w_questions.id
+
+      expect(response.status).not_to eq(200)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:alert]).to be
+    end
+
+    it 'no access #take_money' do
+      put :take_money, id: game_w_questions.id
+
+      expect(response.status).not_to eq(200)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:alert]).to be
+    end
+  end
 end
